@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
+import useRoutes from './routes/routes.js';
 
 dotenv.config();
 
@@ -14,6 +15,10 @@ app.use(express.static("public"));
 app.use(cors());
 
 // Routes
+app.get('/' , (req, res)=>{
+    res.send('Hello, Welcome to the Booking App')
+});
+useRoutes(app);
 
 // PORT
 const PORT = process.env.PORT || 8000;

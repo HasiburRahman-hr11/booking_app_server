@@ -1,7 +1,13 @@
-import { Schema, Model, model } from "mongoose";
+import mongoose from "mongoose";
+
+const {Schema , model} = mongoose;
 
 const hotelSchema = new Schema({
   name: {
+    type: String,
+    required: true,
+  },
+  title: {
     type: String,
     required: true,
   },

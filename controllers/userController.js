@@ -1,5 +1,6 @@
 import User from "../model/User.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 // Create New User
 export const createNewUser = async (req, res) => {
@@ -28,14 +29,25 @@ export const loginUser = async (req, res) => {
         .status(404)
         .json({ success: false, message: "User not found!" });
 
-    const isPassCorrect = await bcrypt.compareSync(req.body.password, user.password);
+    const isPassCorrect = await bcrypt.compareSync(
+      req.body.password,
+      user.password
+    );
     if (!isPassCorrect)
       return res
         .status(400)
         .json({ success: false, message: "Incorrect password!" });
 
-    res.status(201).json(user);
+    const token = jwt.sign(
+      { id: user._id, isAdmin: user.isAdmin },
+      process.env.JWT_SECRET
+    );
 
+    const { password, isAdmin, ...other } = user._doc;
+    res
+      .cookie("access_token", token, { httpOnly: true })
+      .status(201)
+      .json({ ...other });
   } catch (error) {
     console.log(error);
     res.status(500).json(error);

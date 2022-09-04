@@ -101,7 +101,7 @@ export const getSingleUser = async (req, res) => {
 };
 
 // Get all Users
-export const getAllUser = async (req, res) => {
+export const getAllUsers = async (req, res) => {
   try {
     const users = await User.find();
 

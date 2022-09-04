@@ -67,3 +67,20 @@ export const getAllHotels = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
+// Count Hotels by City
+export const countByCity = async (req, res) => {
+  const cities = req.query.cities.split(",");
+  try {
+    const list = await Promise.all(
+      cities.map((city) => {
+        return Hotel.countDocuments({ city: city });
+      })
+    );
+
+    res.status(200).json(list);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+};
